@@ -21,6 +21,7 @@ interface Props {
 export function AppHeader({ className }: Props) {
   const navigate = useNavigate();
   const { isMobile } = useBreakpoint();
+  const authDisabled = import.meta.env.APP_DISABLE_AUTH === "true";
   const toggleSidebar = useUiStore((s) => s.toggleSidebar);
   const { language, theme: _appTheme } = useAppStore(
     useShallow(appStoreSelector),
@@ -122,16 +123,18 @@ export function AppHeader({ className }: Props) {
         )}
       </MgIconButton>
 
-      <div className="h-6 w-px bg-mg-line" />
+      {!authDisabled && <div className="h-6 w-px bg-mg-line" />}
 
-      <button
-        type="button"
-        title="account"
-        onClick={() => navigate("/signin")}
-        className="flex size-9 cursor-pointer items-center justify-center rounded-full bg-[linear-gradient(135deg,#ff8a5b,#ff5b9b)] text-[13px] font-bold text-white"
-      >
-        M
-      </button>
+      {!authDisabled && (
+        <button
+          type="button"
+          title="account"
+          onClick={() => navigate("/signin")}
+          className="flex size-9 cursor-pointer items-center justify-center rounded-full bg-[linear-gradient(135deg,#ff8a5b,#ff5b9b)] text-[13px] font-bold text-white"
+        >
+          M
+        </button>
+      )}
     </header>
   );
 }

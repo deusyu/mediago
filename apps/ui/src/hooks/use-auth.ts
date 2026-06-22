@@ -12,6 +12,7 @@ export function useAuth() {
 
   useEffect(() => {
     if (!isWeb) return;
+    if (import.meta.env.APP_DISABLE_AUTH === "true") return;
     if (location.pathname === "/signin") return;
 
     // If we already have an apiKey stored, no need to check

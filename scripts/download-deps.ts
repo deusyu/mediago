@@ -124,6 +124,8 @@ function getExtractBinaryName(
 // ============================================================
 
 const DEPS_DIR = path.resolve(__dirname, "..", ".deps");
+const GITHUB_RELEASE_PROXY_PREFIX =
+  process.env.GITHUB_RELEASE_PROXY_PREFIX || "";
 
 async function downloadFile(url: string, dest: string): Promise<void> {
   const response = await fetch(url, {
@@ -272,7 +274,10 @@ async function downloadTool(
     return;
   }
 
-  const url = `https://github.com/${tool.repo}/releases/download/${tool.version}/${assetName}`;
+  const releaseUrl = `https://github.com/${tool.repo}/releases/download/${tool.version}/${assetName}`;
+  const url = GITHUB_RELEASE_PROXY_PREFIX
+    ? `${GITHUB_RELEASE_PROXY_PREFIX}${releaseUrl}`
+    : releaseUrl;
   const tempFile = path.join(destDir, assetName);
 
   console.log(`  ↓ Downloading ${toolName} for ${platformKey}...`);

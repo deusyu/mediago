@@ -21,6 +21,9 @@ export default defineConfig({
   define: {
     "import.meta.env.APP_VERSION": JSON.stringify(pkg.version),
     "import.meta.env.APP_TARGET": JSON.stringify(process.env.APP_TARGET),
+    "import.meta.env.APP_DISABLE_AUTH": JSON.stringify(
+      process.env.APP_DISABLE_AUTH,
+    ),
   },
   plugins: [react(), tailwindcss()],
   envDir: projectRoot,
