@@ -25,6 +25,7 @@ export const en = {
   pending: "Pending",
   continueDownload: "Resume",
   playVideo: "Play video",
+  share: "Share",
   scanToWatch: "Scan to watch (same Wi-Fi required)",
   delete: "Delete",
   cancel: "Cancel",

@@ -25,6 +25,7 @@ export const it = {
   pending: "In attesa",
   continueDownload: "Riprendi",
   playVideo: "Riproduci video",
+  share: "Condividi",
   scanToWatch: "Scansione per guardare (è richiesto lo stesso Wi-Fi)",
   delete: "Elimina",
   cancel: "Annulla",

@@ -25,6 +25,7 @@ export const zh = {
   pending: "等待下载",
   continueDownload: "继续下载",
   playVideo: "播放视频",
+  share: "分享",
   scanToWatch: "扫码观看(需要连接相同 WIFI)",
   delete: "删除",
   cancel: "取消",
