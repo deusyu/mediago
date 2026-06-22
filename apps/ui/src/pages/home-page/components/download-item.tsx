@@ -20,6 +20,7 @@ import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import { MgIconButton, MgPill } from "@/components/mg";
 import { useEnvPath } from "@/hooks/use-config";
+import { useLazycat } from "@/hooks/use-lazycat";
 import { usePlatform } from "@/hooks/use-platform";
 import type { DownloadTaskDetails } from "@/hooks/use-tasks";
 import { useUiStore } from "@/store/ui";
@@ -66,6 +67,7 @@ export const DownloadTaskItem = memo(function DownloadTaskItem({
   const { t } = useTranslation();
   const { shell } = usePlatform();
   const { envPath } = useEnvPath();
+  const lzc = useLazycat();
   const openContextMenu = useUiStore((s) => s.openContextMenu);
 
   const mg = mapStatus(task.status);
@@ -85,8 +87,23 @@ export const DownloadTaskItem = memo(function DownloadTaskItem({
   const showProgress = !isSuccess && !isFailed;
   const statusLabel = t(statusLabelKey[mg]);
 
-  const handlePlay = useMemoizedFn(() => {
+  const handlePlay = useMemoizedFn(async () => {
     tdApp.onEvent(PLAY_VIDEO);
+    // Prefer the LazyCat client's native video player when available — it
+    // streams the finished file from the Go core (`/videos/:id`, served from
+    // the download dir). Fall back to MediaGo's built-in web player elsewhere.
+    if (lzc.hasNativePlayer) {
+      try {
+        await lzc.openNativePlayer(
+          `${window.location.origin}/videos/${task.id}`,
+          task.name,
+          task.id,
+        );
+        return;
+      } catch {
+        // fall through to the built-in player
+      }
+    }
     if (envPath?.playerUrl) shell.open(`${envPath.playerUrl}?id=${task.id}`);
   });
 
