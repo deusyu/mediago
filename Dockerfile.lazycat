@@ -136,7 +136,12 @@ RUN mkdir -p /app/mediago/data /app/mediago/logs /app/mediago/downloads
 # layer and so callers can still append overrides via `docker run`.
 COPY scripts/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN sed -i '/--enable-auth/d' /usr/local/bin/docker-entrypoint.sh
-RUN sed -i '/^exec mediago-core/i mkdir -p /app/mediago/data /app/mediago/logs /app/mediago/downloads' /usr/local/bin/docker-entrypoint.sh
+# The whole /app/mediago is bound to the user's 网盘 home, so save downloads
+# directly into MediaGo/ (not a MediaGo/downloads/ subdir), matching the official
+# package. --local-dir is explicit, so it overrides any persisted `local` config
+# on startup (see syncAppStoreToCfg in cmd/server/main.go).
+RUN sed -i 's#--local-dir=/app/mediago/downloads#--local-dir=/app/mediago#' /usr/local/bin/docker-entrypoint.sh
+RUN sed -i '/^exec mediago-core/i mkdir -p /app/mediago/data /app/mediago/logs' /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 EXPOSE 8899
