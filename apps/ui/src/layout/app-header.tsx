@@ -94,8 +94,25 @@ export function AppHeader({ className }: Props) {
             />
           </svg>
         </div>
-        <span className="text-[16px] font-extrabold leading-none tracking-[-0.02em] text-mg-fg">
-          MediaGo<span className="text-mg-primary">+</span>
+        <span
+          style={{ fontFamily: "'Space Grotesk', ui-sans-serif, sans-serif" }}
+          className="text-[20px] font-bold leading-none tracking-[-0.5px] text-[#2c2747] dark:text-white"
+        >
+          Media
+          <span className="text-[#7a5cf0] dark:text-[#b79bff]">
+            Go
+            <span
+              style={{
+                fontSize: "1.18em",
+                fontWeight: 600,
+                marginLeft: "1px",
+                display: "inline-block",
+                transform: "translateY(-0.06em)",
+              }}
+            >
+              +
+            </span>
+          </span>
         </span>
       </div>
 
