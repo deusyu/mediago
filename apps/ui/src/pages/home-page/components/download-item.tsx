@@ -15,7 +15,6 @@ import {
   Pencil,
   Play,
   RotateCw,
-  Share2,
 } from "lucide-react";
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
@@ -106,15 +105,6 @@ export const DownloadTaskItem = memo(function DownloadTaskItem({
       }
     }
     if (envPath?.playerUrl) shell.open(`${envPath.playerUrl}?id=${task.id}`);
-  });
-
-  const handleShare = useMemoizedFn(async () => {
-    if (!task.file) return;
-    try {
-      await lzc.shareFile(task.file);
-    } catch {
-      // client may not support sharing this file
-    }
   });
 
   const handleRowCtx = useMemoizedFn((e: React.MouseEvent) => {
@@ -276,15 +266,6 @@ export const DownloadTaskItem = memo(function DownloadTaskItem({
               onClick={handlePlay}
             >
               <Play size={15} fill="currentColor" strokeWidth={0} />
-            </MgIconButton>
-          )}
-          {isSuccess && exists && lzc.inClient && (
-            <MgIconButton
-              variant="surface"
-              title={t("share")}
-              onClick={handleShare}
-            >
-              <Share2 size={15} strokeWidth={2.2} />
             </MgIconButton>
           )}
           {status === DownloadStatus.Stopped && (

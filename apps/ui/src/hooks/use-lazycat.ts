@@ -69,9 +69,16 @@ export function useLazycat(): LazycatApi {
     };
   }, []);
 
+  const isMobile =
+    typeof navigator !== "undefined" &&
+    /iphone|ipad|ipod|android/i.test(navigator.userAgent);
+
   return {
     inClient: caps.inClient,
-    hasNativePlayer: caps.names.has("player"),
+    // Mobile-only (desktop keeps the built-in web player). Don't gate on the
+    // "player" capability — the iOS client doesn't reliably report it even
+    // though OpenNativeVideoPlayer works there; attempt it, fall back on error.
+    hasNativePlayer: caps.inClient && isMobile,
     openNativePlayer: async (url, name, id) => {
       const AppCommon = await loadAppCommon();
       await AppCommon.OpenNativeVideoPlayer({
